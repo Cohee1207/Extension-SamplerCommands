@@ -50,6 +50,10 @@ function getTitleParent(element) {
     return parent;
 }
 
+/**
+ * Enumerates all sampler parameters available in the UI.
+ * @returns {SamplerParameter[]} List of sampler parameters.
+ */
 function enumerateSamplerParameters() {
     const leftPanel = document.getElementById('left-nav-panel');
     const computedStyle = window.getComputedStyle(leftPanel);
@@ -63,7 +67,7 @@ function enumerateSamplerParameters() {
     const sanitizeId = id => id.replace('_counter', '').replace('_textgenerationwebui', '').replace('_openai', '').replace('_novel', '').replace('openai_', '').replace('oai_', '');
     const isVisible = e => e instanceof HTMLElement && e.offsetHeight > 0 && e.offsetWidth > 0;
     const rangeSliders = Array.from(leftPanel.querySelectorAll('input[type="range"], input[type="checkbox"], input[type="number"]:not([data-for])')).filter(isVisible);
-    const roundToPrecision = (num, precision = 1e4) => ((num = parseFloat(num + "") || 0), Math.round((num + Number.EPSILON) * precision) / precision);
+    const roundToPrecision = (num, precision = 1e4) => ((num = parseFloat(num + '') || 0), Math.round((num + Number.EPSILON) * precision) / precision);
 
     /** @type {SamplerParameter[]} */
     const samplerParameters = [];
