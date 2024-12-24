@@ -63,6 +63,7 @@ function enumerateSamplerParameters() {
     const sanitizeId = id => id.replace('_counter', '').replace('_textgenerationwebui', '').replace('_openai', '').replace('_novel', '').replace('openai_', '').replace('oai_', '');
     const isVisible = e => e instanceof HTMLElement && e.offsetHeight > 0 && e.offsetWidth > 0;
     const rangeSliders = Array.from(leftPanel.querySelectorAll('input[type="range"], input[type="checkbox"], input[type="number"]:not([data-for])')).filter(isVisible);
+    const roundToPrecision = (num, precision = 1e4) => ((num = parseFloat(num + "") || 0), Math.round((num + Number.EPSILON) * precision) / precision);
 
     /** @type {SamplerParameter[]} */
     const samplerParameters = [];
@@ -82,9 +83,9 @@ function enumerateSamplerParameters() {
         const sampler = {
             id: sanitizeId(control.id),
             name: name,
-            max: parseFloat(control.max),
-            min: parseFloat(control.min),
-            value: parseFloat(control.value),
+            max: roundToPrecision(parseFloat(control.max)),
+            min: roundToPrecision(parseFloat(control.min)),
+            value: roundToPrecision(parseFloat(control.value)),
             checked: control.checked,
             type: control.type,
             control: control,
@@ -107,7 +108,10 @@ function enumerateSamplerParameters() {
 (() => {
     const enumProvider = () => enumerateSamplerParameters()
         .sort((a, b) => a.name.localeCompare(b.name))
-        .map(p => new SlashCommandEnumValue(p.id, p.name, enumTypes.number, p.type === 'range' ? enumIcons.number : enumIcons.boolean));
+        .map(p => {
+            const name = `${p.name} ⇒ ${p.type == 'range' ? `${p.value} [${p.min}..${p.max}]` : p.checked}`;
+            return new SlashCommandEnumValue(p.id, name, enumTypes.number, p.type === 'range' ? enumIcons.number : enumIcons.boolean);
+        });
 
     SlashCommandParser.addCommandObject(SlashCommand.fromProps({
         name: 'sampler-get',
