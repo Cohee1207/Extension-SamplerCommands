@@ -114,7 +114,8 @@ function enumerateSamplerParameters() {
         .sort((a, b) => a.name.localeCompare(b.name))
         .map(p => {
             const name = `${p.name} ⇒ ${p.type == 'range' ? `${p.value} [${p.min}..${p.max}]` : p.checked}`;
-            return new SlashCommandEnumValue(p.id, name, enumTypes.number, p.type === 'range' ? enumIcons.number : enumIcons.boolean);
+            const icon = p.type === 'range' ? enumIcons.number : enumIcons.boolean;
+            return new SlashCommandEnumValue(p.id, name, enumTypes.number, icon);
         });
 
     SlashCommandParser.addCommandObject(SlashCommand.fromProps({
