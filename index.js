@@ -163,10 +163,6 @@ function enumerateSamplerParameters() {
             }
             if (parameter.type === 'checkbox') {
                 const isTrue = isTrueBoolean(String(value)) === true;
-                const isFalse = isFalseBoolean(String(value)) === false;
-                if (!isTrue && !isFalse) {
-                    throw new Error('Value must be convertible to a boolean.');
-                }
                 parameter.control.checked = isTrue;
             } else {
                 const number = parseFloat(String(value));
