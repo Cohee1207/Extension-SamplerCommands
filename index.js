@@ -3,7 +3,7 @@ import { ARGUMENT_TYPE, SlashCommandArgument, SlashCommandNamedArgument } from '
 import { enumIcons } from '../../../slash-commands/SlashCommandCommonEnumsProvider.js';
 import { enumTypes, SlashCommandEnumValue } from '../../../slash-commands/SlashCommandEnumValue.js';
 import { SlashCommandParser } from '../../../slash-commands/SlashCommandParser.js';
-import { isFalseBoolean, isTrueBoolean } from '../../../utils.js';
+import { isTrueBoolean } from '../../../utils.js';
 
 /**
  * @typedef {Object} SamplerParameter - Represents a sampler parameter.
@@ -162,7 +162,7 @@ function enumerateSamplerParameters() {
                 throw new Error('Value must be a string.');
             }
             if (parameter.type === 'checkbox') {
-                const isTrue = isTrueBoolean(String(value)) === true;
+                const isTrue = isTrueBoolean(String(value));
                 parameter.control.checked = isTrue;
             } else {
                 const number = parseFloat(String(value));
